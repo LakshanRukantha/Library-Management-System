@@ -1,10 +1,19 @@
 {
-  "name": "Library-Management-System",
+  "name": "library-management-system",
   "version": "1.0.0",
-  "description": "Library Management System",
+  "description": "Library Management System API",
   "main": "server.js",
   "repository": "https://github.com/LakshanRukantha/Library-Management-System.git",
   "author": "Lakshan Rukantha",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "start": "nodemon --exec babel-node src/server.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@babel/node": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "nodemon": "^2.0.19"
+  }
 }
