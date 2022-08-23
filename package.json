@@ -1,0 +1,10 @@
+{
+  "name": "Library-Management-System",
+  "version": "1.0.0",
+  "description": "Library Management System",
+  "main": "server.js",
+  "repository": "https://github.com/LakshanRukantha/Library-Management-System.git",
+  "author": "Lakshan Rukantha",
+  "license": "MIT",
+  "private": false
+}
