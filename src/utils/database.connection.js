@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import configs from "../configs";
+import { configs } from "../configs";
 import logger from "../utils/logger";
 
 let database;
