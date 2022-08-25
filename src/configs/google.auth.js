@@ -1,28 +1,52 @@
-import GoogleStrategy, { Strategy } from "passport-google-oauth20";
-
+import GoogleStrategy from "passport-google-oauth20";
 import { configs } from "./index";
+import User from "../api/models/user.model";
 
 const googleAuth = (passport) => {
   GoogleStrategy.Strategy;
 
   passport.use(
-    new Strategy(
+    new GoogleStrategy(
       {
         clientID: configs.GOOGLE_CLIENT_ID,
         clientSecret: configs.GOOGLE_CLIENT_SECRET,
         callbackURL: configs.GOOGLE_REDIRECT_URL,
       },
-      (accessToken, refreshToken, profile, callback) => {
-        return callback(null, profile);
+      async (accessToken, refreshToken, profile, callback) => {
+        const userObj = {
+          googleId: profile.id,
+          displayName: profile.displayName,
+          gmail: profile.emails[0].value,
+          image: profile.photos[0].value,
+          firstName: profile.name.givenName,
+          lastName: profile.name.familyName,
+        };
+
+        let user = await User.findOne({ googleId: profile.id });
+
+        if (user) {
+          return callback(null, user);
+        }
+
+        User.create(userObj)
+          .then((user) => {
+            return callback(null, user);
+          })
+          .catch((err) => {
+            return callback(err.message);
+          });
       }
     )
   );
+
   passport.serializeUser((user, callback) => {
     callback(null, user.id);
   });
 
   passport.deserializeUser((id, callback) => {
-    callback(null, id);
+    User.findById(id, (err, user) => {
+      callback(err, user);
+    });
   });
 };
 

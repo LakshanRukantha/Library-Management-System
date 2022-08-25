@@ -1,3 +1,5 @@
+import { authenticate } from "../middlewares/auth.middleware";
+
 const routesinit = (app, passport, logger) => {
   app.get(
     "/auth/google",
@@ -6,12 +8,16 @@ const routesinit = (app, passport, logger) => {
 
   app.get(
     "/auth/google/callback",
-    passport.authenticate("google", { failureRedirect: "/login" }),
+    passport.authenticate("google", {
+      successRedirect: "/books",
+      failureRedirect: "/login",
+    }),
     (req, res) => {
-      // Successful authentication, redirect home.
       logger.info("✅ User Authenticated.");
-      res.redirect("/welcome");
     }
   );
+  app.get("/books", authenticate, (req, res) => {
+    res.send("<h4>User is authenticated.</h4>");
+  });
 };
 export { routesinit };
